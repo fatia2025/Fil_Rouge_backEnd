@@ -14,6 +14,7 @@ const utilisateurSchema = new mongoose.Schema(
     },
     adresse: { type: String, required: true },
     profile: { type: mongoose.Schema.Types.ObjectId, ref: "Profile" },
+    panier: { type: mongoose.Schema.Types.ObjectId, ref: "Panier" }, // ajout panier comme profil
   },
   { timestamps: true }
 );

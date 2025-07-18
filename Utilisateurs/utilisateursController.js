@@ -1,6 +1,10 @@
 import Utilisateur from "./utilisateurModels.js";
+
 import Profile from "../Profile/profileModels.js";
 
+import Panier from "../Panier/panierModels.js";
+
+// POST ----------------------------------
 export const creationUtilisateurEtProfile = async (req, res) => {
   try {
     const { nom, prenom, email, motDePasse, adresse } = req.body;
@@ -20,26 +24,39 @@ export const creationUtilisateurEtProfile = async (req, res) => {
       email,
       utilisateur: utilisateur._id,
     });
+
+    // Créer un panier vide pour ce nouvel utilisateur
+    const panier = new Panier({
+      p_id_utilisateur: utilisateur._id,
+      p_totale: 0, // ou autre valeur par défaut
+      p_datte: new Date(),
+    });
+
     await profile.save();
 
     utilisateur.profile = profile._id;
-    await utilisateur.save();
+    // Associer le  référence panier
+    utilisateur.panier = panier._id;
 
-    const populatedUtilisateur = await Utilisateur.findById(
-      utilisateur._id
-    ).populate("profile");
+    await utilisateur.save();
+    await panier.save();
+    // -------------------------
+    const populatedUtilisateur = await Utilisateur.findById(utilisateur._id)
+      .populate("profile") // populate à voir
+      .populate("panier");
 
     res.status(201).json({
       utilisateurId: utilisateur._id,
       profileId: profile._id,
       Utilisateur: populatedUtilisateur,
+      utilisateur: populatedUtilisateur, // Récupération avec .populate
     });
   } catch (err) {
-    console.error("error while trying to create user with profile ", err);
+    console.error(" erreur création du profil ", err);
     res.status(500).json({ message: "error" });
   }
 };
-
+// GET ----------------------------------
 export const utilisateurParId = async (req, res) => {
   try {
     const utilisateurTrouve = await Utilisateur.findById(
@@ -55,7 +72,7 @@ export const utilisateurParId = async (req, res) => {
     return res.status(500).json({ message: "error" });
   }
 };
-
+// PATCH ----------------------------------
 export const updateUtilisateurParId = async (req, res) => {
   try {
     const { nom, email, prenom, motDePasse, adresse } = req.body;
@@ -76,7 +93,7 @@ export const updateUtilisateurParId = async (req, res) => {
     return res.status(500).json("error");
   }
 };
-
+// DELETE ----------------------------------
 export const supressionUtilisateurParId = async (req, res) => {
   try {
     const utilisateurSupprime = await Utilisateur.findByIdAndDelete(
@@ -94,3 +111,4 @@ export const supressionUtilisateurParId = async (req, res) => {
     return res.status(500).json({ message: "error" });
   }
 };
+// ----------------------------------

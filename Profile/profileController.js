@@ -3,6 +3,7 @@ import Profile from "./profileModels.js";
 export const getProfileUtilisateurParId = async (req, res) => {
   try {
     const profile = await Profile.findById(req.params.id).populate(
+      //  ? explication ?
       "utilisateur"
     );
     if (!profile) {
