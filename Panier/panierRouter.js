@@ -13,4 +13,11 @@ router.post("/", createPanier);
 //router.patch("/", updatePanier);
 //router.delete("/:id", deletePanier);
 
+// ajout produit au panier ------------------
+import { ajoutProduitPanier } from "./panierController.js";
+
+router.post("/ajoutProduitAuPanier", ajoutProduitPanier);
+
+// fin --------------------------------------------
+
 export default router;

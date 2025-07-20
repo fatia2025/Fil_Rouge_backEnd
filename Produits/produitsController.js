@@ -7,7 +7,7 @@ export const createProduit = async (req, res) => {
     console.log(req.body);
     const { nom, categorie, prix } = req.body;
 
-    /* const category = new Category({ genre });
+    /* const category = new Category({ genre }); comme ca ajouter une seule catégorie
     await category.save(); */
     console.log(nom, categorie, prix);
 

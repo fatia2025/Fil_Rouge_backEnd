@@ -3,15 +3,15 @@ import Profile from "./profileModels.js";
 export const getProfileUtilisateurParId = async (req, res) => {
   try {
     const profile = await Profile.findById(req.params.id).populate(
-      //  ? explication ?
+      //  ? ici explication ?
       "utilisateur"
     );
     if (!profile) {
-      return res.status(404).json({ message: "Profile not found" });
+      return res.status(404).json({ message: "pas de profile" });
     }
     res.status(200).json(profile);
   } catch (err) {
-    console.error("error while fetching profiles", err);
-    res.status(500).json({ error: "error" });
+    console.error("erreure d'affichage", err);
+    res.status(500).json({ error: "erreur" });
   }
 };

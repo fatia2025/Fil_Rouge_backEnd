@@ -5,7 +5,7 @@ import express from "express";
 
 import utilisateursRouter from "./Utilisateurs/utilisateursRouter.js";
 import profileRouter from "./Profile/profileRouter.js";
-import produitsRouter from "./Produits/produitsRouter.js"; // route
+import produitsRouter from "./Produits/produitsRouter.js";
 import panierRouter from "./Panier/panierRouter.js";
 
 console.log(" test filRouge_F ----------- ");

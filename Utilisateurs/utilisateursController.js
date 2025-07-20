@@ -1,7 +1,5 @@
-import Utilisateur from "./utilisateurModels.js";
-
+import Utilisateur from "./utilisateursModels.js";
 import Profile from "../Profile/profileModels.js";
-
 import Panier from "../Panier/panierModels.js";
 
 // POST ----------------------------------
@@ -24,20 +22,19 @@ export const creationUtilisateurEtProfile = async (req, res) => {
       email,
       utilisateur: utilisateur._id,
     });
+    await profile.save();
+    utilisateur.profile = profile._id;
 
-    // Créer un panier vide pour ce nouvel utilisateur
+    // Créer un panier pour un nouveau utilisateur
     const panier = new Panier({
       p_id_utilisateur: utilisateur._id,
+      p_ids_produits: [],
       p_totale: 0, // ou autre valeur par défaut
       p_datte: new Date(),
     });
 
-    await profile.save();
-
-    utilisateur.profile = profile._id;
     // Associer le  référence panier
     utilisateur.panier = panier._id;
-
     await utilisateur.save();
     await panier.save();
     // -------------------------
