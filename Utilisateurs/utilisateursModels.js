@@ -5,8 +5,8 @@ import Panier from "../Panier/panierModels.js";
 
 const utilisateurSchema = new mongoose.Schema(
   {
-    prenom: { type: String, required: true },
     nom: { type: String, required: true },
+    prenom: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     motDePasse: {
       type: String,
@@ -14,7 +14,9 @@ const utilisateurSchema = new mongoose.Schema(
       trim: true,
       minlength: [8, "Au moins 8 caractères requis"],
     },
-    adresse: { type: String, required: false }, // avant True
+
+    adresse: { type: String, required: false }, // avant c'etait True
+
     profile: { type: mongoose.Schema.Types.ObjectId, ref: "Profile" },
 
     panier: { type: mongoose.Schema.Types.ObjectId, ref: "Panier" }, // ajout panier comme profil
@@ -23,6 +25,7 @@ const utilisateurSchema = new mongoose.Schema(
 );
 
 utilisateurSchema.pre("findOneAndDelete", async function (next) {
+  // code exécuté avant la suppression d’un document avec findOneAndDelete
   try {
     const utilisateur = await this.model.findOne(this.getFilter());
     if (utilisateur?.profile) {
